@@ -22,13 +22,15 @@ namespace WebProblemDetails.Controllers
         }
         // GET: api/<ProductController>
         [HttpGet]
-        public IEnumerable<Product> Get()
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public IActionResult Get()
         {
-            return _produts;
+            return Ok(_produts);
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public IActionResult Get(int id)
         {
             var product = new Product();
@@ -45,6 +47,7 @@ namespace WebProblemDetails.Controllers
 
         // POST api/<ProductController>
         [HttpPost]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public IActionResult Post([FromBody] Product value)
         {
             if (!ModelState.IsValid) {
@@ -54,32 +57,30 @@ namespace WebProblemDetails.Controllers
         }
 
         // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public IActionResult Put(int id, [FromBody] Product value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-
             if (!_produts.Exists(p => p.Id == id)) {
                 return NotFound();
             }
-
             return NoContent();
         }
 
         // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
         public IActionResult Delete(int id)
         {
             if (!_produts.Exists(p => p.Id == id))
             {
                 return NotFound();
             }
-
             return Ok();
-
         }
     }
 }
